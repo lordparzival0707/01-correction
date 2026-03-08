@@ -7,21 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.example.demo.service.*;
 import java.util.*;
 
-import com.example.demo.model.Difference;
-import com.example.demo.model.Note;
+import com.example.demo.model.NoteFinale;
 import com.example.demo.model.Parametre;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
 	@Autowired
-	private NoteService noteService;
-
-	@Autowired
-	private DifferenceService differenceService;
-
-	@Autowired
-	private ParametreService parametreService;
+	private NoteFinaleService noteFinaleService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -29,8 +22,8 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Parametre parametre = parametreService.getParametreByDifferenceNote(1L, 1L);
-		System.out.println(parametre.getOperateur().getLibelle());
+		NoteFinale noteFinale = noteFinaleService.getNoteFinale(1L, 1L);
+		System.out.println(noteFinale.getValeur());
 	}
 
 }
