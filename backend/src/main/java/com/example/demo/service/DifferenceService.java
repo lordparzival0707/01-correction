@@ -28,4 +28,8 @@ public class DifferenceService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public Difference findByMatiereId(Long matiereId) {
+        return repository.findByMatiere_Id(matiereId);
+    }
 }

@@ -29,4 +29,29 @@ public class NoteService {
         repository.deleteById(id);
     }
 
+    public List<Note> findByMatiereIdAndEtudiantId(Long matiereId, Long etudiantId) {
+        return repository.findByMatiere_IdAndEtudiant_Id(matiereId, etudiantId);
+    }
+
+    public Double getDifferenceNote(Long matiereId, Long etudiantId) {
+
+        Double differenceNote = 0.0;
+
+        List<Note> notes = findByMatiereIdAndEtudiantId(matiereId, etudiantId);
+
+        for (int i = 0; i < notes.size(); i++) {
+
+            Note note = notes.get(i);
+
+            for (int j = i + 1; j < notes.size(); j++) {
+                Double difference = note.getValeur() - notes.get(j).getValeur();
+                if (difference < 0) {
+                    difference = difference * -1;
+                }
+                differenceNote += difference;
+            }
+        }
+
+        return differenceNote;
+    }
 }
