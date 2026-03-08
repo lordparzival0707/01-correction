@@ -55,7 +55,7 @@ public class ParametreService {
             parametre = findByOperateurId(2L);
         }
 
-        if (differenceNote == difference.getValeur()) {
+        if (differenceNote.equals(difference.getValeur())) {
             parametre = findByOperateurId(3L);
         }
 
