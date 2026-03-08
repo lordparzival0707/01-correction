@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,7 +18,7 @@ public class Difference {
     @JsonBackReference
     private Matiere matiere;
 
-    private BigDecimal valeur;
+    private Double valeur;
 
     @OneToMany(mappedBy="difference")
     @JsonManagedReference
@@ -33,9 +32,9 @@ public class Difference {
 
     public void setMatiere(Matiere matiere){ this.matiere = matiere; }
 
-    public BigDecimal getValeur(){ return valeur; }
+    public Double getValeur(){ return valeur; }
 
-    public void setValeur(BigDecimal valeur){ this.valeur = valeur; }
+    public void setValeur(Double valeur){ this.valeur = valeur; }
 
     public List<Parametre> getParametres(){ return parametres; }
 

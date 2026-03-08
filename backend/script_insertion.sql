@@ -27,8 +27,8 @@ INSERT INTO t_operateurs (libelle) VALUES
 ('egal');
 
 INSERT INTO t_resolutions (libelle) VALUES
-('plus_petit'),
 ('plus_grand'),
+('plus_petit'),
 ('moyenne');
 
 INSERT INTO t_differences (matiere_id, valeur) VALUES
