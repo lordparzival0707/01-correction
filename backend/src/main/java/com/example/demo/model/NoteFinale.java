@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "t_notes_finales")
@@ -18,7 +19,7 @@ public class NoteFinale {
 
     @ManyToOne
     @JoinColumn(name = "matiere_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Matiere matiere;
 
     private Double valeur;
