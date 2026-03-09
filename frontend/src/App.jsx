@@ -24,9 +24,9 @@ function App() {
   // affichage (render)
 
   return (
-    <div className='p-10'>
+    <div data-theme="dark" className='min-h-screen flex p-10'>
 
-      <form onSubmit={handleSumbit}>
+      <form className="mr-10" onSubmit={handleSumbit}>
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
           <legend className="fieldset-legend">Note finale</legend>
 
@@ -40,23 +40,27 @@ function App() {
         </fieldset>
       </form>
 
-      <div className="overflow-x-auto">
+      <div className="w-full overflow-x-auto rounded-box bg-base-200">
         <table className="table table-zebra">
-          {/* head */}
           <thead>
             <tr>
               <th></th>
               <th>Matiere</th>
               <th>Note</th>
+              <th>Resolution</th>
             </tr>
           </thead>
           <tbody>
 
             {note !== null && (
+
               <tr>
                 <th>{note.matiere.id}</th>
                 <td>{note.matiere.nom}</td>
-                <td>{note.valeur}</td>
+                <td className=" text-lg font-bold">
+                  {note.valeur} / 20
+                </td>
+                <td>{note.parametre.resolution.libelle}</td>
               </tr>
             )}
 

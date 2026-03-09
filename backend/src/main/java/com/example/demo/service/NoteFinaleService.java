@@ -55,10 +55,10 @@ public class NoteFinaleService {
         DoubleSummaryStatistics stats = notes.stream().mapToDouble(Note::getValeur).summaryStatistics();
 
         if (parametre.getResolution().getId() == 1) {
-            noteValeur = stats.getMax();
+            noteValeur = stats.getMin();
         }
         if (parametre.getResolution().getId() == 2) {
-            noteValeur = stats.getMin();
+            noteValeur = stats.getMax();
         }
         if (parametre.getResolution().getId() == 3) {
             noteValeur = stats.getAverage();
@@ -67,6 +67,7 @@ public class NoteFinaleService {
         noteFinale.setValeur(noteValeur);
         noteFinale.setMatiere(matiereService.findById(matiereId));
         noteFinale.setEtudiant(etudiantService.findById(etudiantId));
+        noteFinale.setParametre(parametre);
 
         return noteFinale;
     }

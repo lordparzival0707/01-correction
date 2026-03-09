@@ -22,8 +22,8 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		NoteFinale noteFinale = noteFinaleService.getNoteFinale(1L, 1L);
-		System.out.println(noteFinale.getValeur());
+		// NoteFinale noteFinale = noteFinaleService.getNoteFinale(1L, 1L);
+		// System.out.println(noteFinale.getValeur());
 	}
 
 }

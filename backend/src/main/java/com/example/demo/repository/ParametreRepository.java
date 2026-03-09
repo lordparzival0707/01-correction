@@ -5,6 +5,6 @@ import com.example.demo.model.Parametre;
 
 public interface ParametreRepository extends JpaRepository<Parametre, Long> {
 
-    public Parametre findByOperateur_Id(Long operateurId);
+    public Parametre findByOperateur_IdAndDifference_Id(Long operateurId, Long differenceId);
     
 }

@@ -21,7 +21,7 @@ public class Difference {
     private Double valeur;
 
     @OneToMany(mappedBy="difference")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Parametre> parametres;
 
     public Difference(){}

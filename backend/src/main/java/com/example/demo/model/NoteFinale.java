@@ -24,6 +24,11 @@ public class NoteFinale {
 
     private Double valeur;
 
+    @ManyToOne
+    @JoinColumn(name = "parametre_id")
+    @JsonManagedReference
+    private Parametre parametre;
+
     public NoteFinale() {
     }
 
@@ -54,4 +59,13 @@ public class NoteFinale {
     public void setValeur(Double valeur) {
         this.valeur = valeur;
     }
+
+    public Parametre getParametre() {
+        return parametre;
+    }
+
+    public void setParametre(Parametre parametre) {
+        this.parametre = parametre;
+    }
+
 }

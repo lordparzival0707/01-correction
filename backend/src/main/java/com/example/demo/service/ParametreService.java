@@ -36,8 +36,8 @@ public class ParametreService {
         repository.deleteById(id);
     }
 
-    public Parametre findByOperateurId(Long operateurId) {
-        return repository.findByOperateur_Id(operateurId);
+    public Parametre findByOperateurIdAndDifferenceId(Long operateurId, Long differenceId) {
+        return repository.findByOperateur_IdAndDifference_Id(operateurId, differenceId);
     }
 
     public Parametre getParametreByDifferenceNote(Long matiereId, Long etudiantId) {
@@ -47,17 +47,37 @@ public class ParametreService {
         Double differenceNote = noteService.getDifferenceNote(matiereId, etudiantId);
         Difference difference = differenceService.findByMatiereId(matiereId);
 
-        if (differenceNote > difference.getValeur()) {
-            parametre = findByOperateurId(1L);
+        if (differenceNote >= difference.getValeur()) {
+
+            if (differenceNote.equals(difference.getValeur())) {
+                parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+                if (parametre != null) {
+                    return parametre;
+                }
+            } else {
+                parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+                if (parametre == null) {
+                    parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+                }
+            }
+
         }
 
-        if (differenceNote < difference.getValeur()) {
-            parametre = findByOperateurId(2L);
+        if (differenceNote <= difference.getValeur()) {
+
+            if (differenceNote.equals(difference.getValeur())) {
+                parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+            } else {
+                parametre = findByOperateurIdAndDifferenceId(1L, difference.getId());
+                if (parametre == null) {
+                    parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+                }
+            }
         }
 
-        if (differenceNote.equals(difference.getValeur())) {
-            parametre = findByOperateurId(3L);
-        }
+        // if (differenceNote.equals(difference.getValeur())) {
+        // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+        // }
 
         return parametre;
     }
