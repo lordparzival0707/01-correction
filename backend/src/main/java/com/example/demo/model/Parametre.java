@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "t_parametres")
@@ -13,7 +14,7 @@ public class Parametre {
 
     @ManyToOne
     @JoinColumn(name="difference_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Difference difference;
 
     @ManyToOne
@@ -23,7 +24,7 @@ public class Parametre {
 
     @ManyToOne
     @JoinColumn(name="resolution_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Resolution resolution;
 
     public Parametre(){}

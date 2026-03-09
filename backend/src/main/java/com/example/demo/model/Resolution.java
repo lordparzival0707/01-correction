@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -15,7 +17,7 @@ public class Resolution {
     private String libelle;
 
     @OneToMany(mappedBy = "resolution")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Parametre> parametres;
 
     public Resolution(){}
