@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "t_notes")
@@ -13,17 +12,14 @@ public class Note {
 
     @ManyToOne
     @JoinColumn(name="etudiant_id")
-    @JsonBackReference
     private Etudiant etudiant;
 
     @ManyToOne
     @JoinColumn(name="correcteur_id")
-    @JsonBackReference
     private Correcteur correcteur;
 
     @ManyToOne
     @JoinColumn(name="matiere_id")
-    @JsonBackReference
     private Matiere matiere;
 
     private Double valeur;

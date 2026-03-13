@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Difference;
 import com.example.demo.model.Parametre;
 import com.example.demo.repository.ParametreRepository;
+import java.util.*;
 
 @Service
 public class ParametreService {
@@ -16,9 +15,6 @@ public class ParametreService {
 
     @Autowired
     NoteService noteService;
-
-    @Autowired
-    DifferenceService differenceService;
 
     public Parametre save(Parametre parametre) {
         return repository.save(parametre);
@@ -36,49 +32,148 @@ public class ParametreService {
         repository.deleteById(id);
     }
 
-    public Parametre findByOperateurIdAndDifferenceId(Long operateurId, Long differenceId) {
-        return repository.findByOperateur_IdAndDifference_Id(operateurId, differenceId);
+    public List<Parametre> findByMatiereId(Long matiereId) {
+        return repository.findByMatiere_id(matiereId);
     }
 
-    public Parametre getParametreByDifferenceNote(Long matiereId, Long etudiantId) {
+    public List<Parametre> getParametresPotentiels(Long matiereId, Long etudiantId) {
+
+        List<Parametre> parametresPotentiels = new ArrayList<>();
+
+        List<Parametre> parametres = findByMatiereId(matiereId);
+        Double difference = noteService.getDifferenceNote(matiereId, etudiantId);
+
+        for (Parametre parametre : parametres) {
+
+            String operateur = parametre.getOperateur().getLibelle();
+            Double seuil = parametre.getSeuil();
+
+            if (operateur.equals("<")) {
+                if (difference < seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
+
+            if (operateur.equals("<=")) {
+                if (difference <= seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
+
+            if (operateur.equals(">")) {
+                if (difference > seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
+
+            if (operateur.equals(">=")) {
+                if (difference >= seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
+        }
+
+        return parametresPotentiels;
+    }
+
+    public Map<Long, Double> getEcartsDifferencePP(Long matiereId, Long etudiantId) {
+
+        Map<Long, Double> ecartsSeuils = new HashMap<>();
+
+        List<Parametre> parametresPotentiels = getParametresPotentiels(matiereId, etudiantId);
+        Double difference = noteService.getDifferenceNote(matiereId, etudiantId);
+
+        for (Parametre parametre : parametresPotentiels) {
+            Double ecart = parametre.getSeuil() - difference;
+            ecartsSeuils.put(parametre.getId(), Math.abs(ecart));
+        }
+
+        return ecartsSeuils;
+    }
+
+    public List<Parametre> getParametresVeritables(Long matiereId, Long etudiantId) {
+
+        List<Parametre> parametresVeritables = new ArrayList<>();
+
+        Map<Long, Double> ecarts = getEcartsDifferencePP(matiereId, etudiantId);
+        Double ecartMin = Collections.min(ecarts.values());
+
+        for (Map.Entry<Long, Double> entry : ecarts.entrySet()) {
+
+            if (entry.getValue().equals(ecartMin)) {
+                Parametre parametre = findById(entry.getKey());
+                parametresVeritables.add(parametre);
+            }
+        }
+
+        return parametresVeritables;
+    }
+
+    public Parametre getParametre(Long matiereId, Long etudiantId) {
 
         Parametre parametre = new Parametre();
 
-        Double differenceNote = noteService.getDifferenceNote(matiereId, etudiantId);
-        Difference difference = differenceService.findByMatiereId(matiereId);
+        List<Parametre> parametresVeritables = getParametresVeritables(matiereId, etudiantId);
+        DoubleSummaryStatistics seuilsStats = parametresVeritables.stream().mapToDouble(Parametre::getSeuil)
+                .summaryStatistics();
+        Double seuilMin = seuilsStats.getMin();
 
-        if (differenceNote >= difference.getValeur()) {
+        if (parametresVeritables.size() == 1) {
+            parametre = parametresVeritables.get(0);
+            return parametre;
+        } else {
 
-            if (differenceNote.equals(difference.getValeur())) {
-                parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
-                if (parametre != null) {
+            for (Parametre p : parametresVeritables) {
+                if (p.getSeuil().equals(seuilMin)) {
+                    parametre = p;
                     return parametre;
                 }
-            } else {
-                parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
-                if (parametre == null) {
-                    parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
-                }
-            }
-
-        }
-
-        if (differenceNote <= difference.getValeur()) {
-
-            if (differenceNote.equals(difference.getValeur())) {
-                parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
-            } else {
-                parametre = findByOperateurIdAndDifferenceId(1L, difference.getId());
-                if (parametre == null) {
-                    parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
-                }
             }
         }
-
-        // if (differenceNote.equals(difference.getValeur())) {
-        // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
-        // }
 
         return parametre;
     }
+
+    // public Parametre getParametreByDifferenceNote(Long matiereId, Long
+    // etudiantId) {
+
+    // Parametre parametre = new Parametre();
+
+    // Double differenceNote = noteService.getDifferenceNote(matiereId, etudiantId);
+    // Difference difference = differenceService.findByMatiereId(matiereId);
+
+    // if (differenceNote >= difference.getValeur()) {
+
+    // if (differenceNote.equals(difference.getValeur())) {
+    // parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+    // if (parametre != null) {
+    // return parametre;
+    // }
+    // } else {
+    // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+    // if (parametre == null) {
+    // parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+    // }
+    // }
+
+    // }
+
+    // if (differenceNote <= difference.getValeur()) {
+
+    // if (differenceNote.equals(difference.getValeur())) {
+    // parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+    // } else {
+    // parametre = findByOperateurIdAndDifferenceId(1L, difference.getId());
+    // if (parametre == null) {
+    // parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+    // }
+    // }
+    // }
+
+    // // if (differenceNote.equals(difference.getValeur())) {
+    // // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+    // // }
+
+    // return parametre;
+    // }
 }

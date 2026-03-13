@@ -48,19 +48,21 @@ public class NoteFinaleService {
 
         NoteFinale noteFinale = new NoteFinale();
 
-        Parametre parametre = parametreService.getParametreByDifferenceNote(matiereId, etudiantId);
+        Parametre parametre = parametreService.getParametre(matiereId, etudiantId);
         List<Note> notes = noteService.findByMatiereIdAndEtudiantId(matiereId, etudiantId);
 
         Double noteValeur = 0.0;
         DoubleSummaryStatistics stats = notes.stream().mapToDouble(Note::getValeur).summaryStatistics();
 
-        if (parametre.getResolution().getId() == 1) {
+        String resolutionLibelle = parametre.getResolution().getLibelle();
+
+        if (resolutionLibelle.equals("plus_petit")) {
             noteValeur = stats.getMin();
         }
-        if (parametre.getResolution().getId() == 2) {
+        if (resolutionLibelle.equals("plus_grand")) {
             noteValeur = stats.getMax();
         }
-        if (parametre.getResolution().getId() == 3) {
+        if (resolutionLibelle.equals("moyenne")) {
             noteValeur = stats.getAverage();
         }
 

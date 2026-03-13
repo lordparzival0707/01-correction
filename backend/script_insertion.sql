@@ -2,7 +2,6 @@ TRUNCATE TABLE
 t_notes_finales,
 t_notes,
 t_parametres,
-t_differences,
 t_resolutions,
 t_operateurs,
 t_correcteurs,
@@ -22,24 +21,20 @@ INSERT INTO t_correcteurs (nom, prenom) VALUES
 ('Randria', 'Bruno');
 
 INSERT INTO t_operateurs (libelle) VALUES
-('superieur'),
-('inferieur'),
-('egal');
+('<'),
+('<='),
+('>'),
+('>=');
 
 INSERT INTO t_resolutions (libelle) VALUES
-('plus_grand'),
 ('plus_petit'),
+('plus_grand'),
 ('moyenne');
 
-INSERT INTO t_differences (matiere_id, valeur) VALUES
-(1, 5.0);
-
-INSERT INTO t_parametres (difference_id, operateur_id, resolution_id) VALUES
-(1, 1, 1),
-(1, 2, 2),
-(1, 3, 3);
+INSERT INTO t_parametres (matiere_id, seuil, operateur_id, resolution_id) VALUES
+(1, 5, 3, 2),
+(1, 10, 1, 1);
 
 INSERT INTO t_notes (etudiant_id, correcteur_id, matiere_id, valeur) VALUES
-(1, 1, 1, 14.5),
-(1, 2, 1, 16.0),
-(1, 3, 1, 16.0);
+(1, 1, 1, 10),
+(1, 2, 1, 17);
