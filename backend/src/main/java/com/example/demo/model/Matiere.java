@@ -25,10 +25,6 @@ public class Matiere {
 
     @OneToMany(mappedBy = "matiere")
     @JsonBackReference
-    private List<Difference> differences;
-
-    @OneToMany(mappedBy = "matiere")
-    @JsonBackReference
     private List<NoteFinale> notesFinales;
 
     public Matiere(){}
@@ -46,10 +42,6 @@ public class Matiere {
     public List<Note> getNotes(){ return notes; }
 
     public void setNotes(List<Note> notes){ this.notes = notes; }
-
-    public List<Difference> getDifferences(){ return differences; }
-
-    public void setDifferences(List<Difference> differences){ this.differences = differences; }
 
     public List<NoteFinale> getNotesFinales(){ return notesFinales; }
 

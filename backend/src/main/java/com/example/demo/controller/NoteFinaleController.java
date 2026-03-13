@@ -24,8 +24,9 @@ public class NoteFinaleController {
     @GetMapping
     public NoteFinale getNoteFinale(@RequestParam Long matiereId, @RequestParam Long etudiantId) {
 
-        NoteFinale noteFinale = noteFinaleService.getNoteFinale(matiereId, etudiantId);
-        return noteFinale;
+        // NoteFinale noteFinale = noteFinaleService.getNoteFinale(matiereId,
+        // etudiantId);
+        return new NoteFinale();
 
     }
 }

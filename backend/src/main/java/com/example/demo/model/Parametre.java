@@ -13,33 +13,59 @@ public class Parametre {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="difference_id")
-    @JsonManagedReference
-    private Difference difference;
+    @JoinColumn(name = "matiere_id")
+    @JsonBackReference
+    private Matiere matiere;
+
+    private Double seuil;
 
     @ManyToOne
-    @JoinColumn(name="operateur_id")
+    @JoinColumn(name = "operateur_id")
     @JsonBackReference
     private Operateur operateur;
 
     @ManyToOne
-    @JoinColumn(name="resolution_id")
+    @JoinColumn(name = "resolution_id")
     @JsonManagedReference
     private Resolution resolution;
 
-    public Parametre(){}
+    public Parametre() {
+    }
 
-    public Long getId(){ return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Difference getDifference(){ return difference; }
+    public Operateur getOperateur() {
+        return operateur;
+    }
 
-    public void setDifference(Difference difference){ this.difference = difference; }
+    public void setOperateur(Operateur operateur) {
+        this.operateur = operateur;
+    }
 
-    public Operateur getOperateur(){ return operateur; }
+    public Resolution getResolution() {
+        return resolution;
+    }
 
-    public void setOperateur(Operateur operateur){ this.operateur = operateur; }
+    public void setResolution(Resolution resolution) {
+        this.resolution = resolution;
+    }
 
-    public Resolution getResolution(){ return resolution; }
+    public Matiere getMatiere() {
+        return matiere;
+    }
 
-    public void setResolution(Resolution resolution){ this.resolution = resolution; }
+    public void setMatiere(Matiere matiere) {
+        this.matiere = matiere;
+    }
+
+    public Double getSeuil() {
+        return seuil;
+    }
+
+    public void setSeuil(Double seuil) {
+        this.seuil = seuil;
+    }
+
 }
