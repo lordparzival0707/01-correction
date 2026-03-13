@@ -91,6 +91,48 @@ public class ParametreService {
         return ecartsSeuils;
     }
 
+    public List<Parametre> getParametresVeritables(Long matiereId, Long etudiantId) {
+
+        List<Parametre> parametresVeritables = new ArrayList<>();
+
+        Map<Long, Double> ecarts = getEcartsDifferencePP(matiereId, etudiantId);
+        Double ecartMin = Collections.min(ecarts.values());
+
+        for (Map.Entry<Long, Double> entry : ecarts.entrySet()) {
+
+            if (entry.getValue().equals(ecartMin)) {
+                Parametre parametre = findById(entry.getKey());
+                parametresVeritables.add(parametre);
+            }
+        }
+
+        return parametresVeritables;
+    }
+
+    public Parametre getParametre(Long matiereId, Long etudiantId) {
+
+        Parametre parametre = new Parametre();
+
+        List<Parametre> parametresVeritables = getParametresVeritables(matiereId, etudiantId);
+        DoubleSummaryStatistics seuilsStats = parametresVeritables.stream().mapToDouble(Parametre::getSeuil)
+                .summaryStatistics();
+        Double seuilMin = seuilsStats.getMin();
+
+        if (parametresVeritables.size() == 1) {
+            parametre = parametresVeritables.get(0);
+            return parametre;
+        } else {
+
+            for (Parametre p : parametresVeritables) {
+                if (p.getSeuil().equals(seuilMin)) {
+                    parametre = p;
+                    return parametre;
+                }
+            }
+        }
+
+        return parametre;
+    }
 
     // public Parametre getParametreByDifferenceNote(Long matiereId, Long
     // etudiantId) {

@@ -35,11 +35,20 @@ public class DemoApplication implements CommandLineRunner {
 		// System.out.println("Seuil: " + parametre.getSeuil());
 		// }
 
-		Map<Long, Double> ecarts = parametreService.getEcartsDifferencePP(1L, 1L);
+		// Map<Long, Double> ecarts = parametreService.getEcartsDifferencePP(1L, 1L);
 
-		for (Map.Entry<Long, Double> entry : ecarts.entrySet()) {
-			System.out.println(entry.getValue());
-		}
+		// for (Map.Entry<Long, Double> entry : ecarts.entrySet()) {
+		// System.out.println(entry.getValue());
+		// }
+
+		// List<Parametre> parametres = parametreService.getParametresVeritables(1L, 1L);
+
+		// for (Parametre parametre : parametres) {
+		// 	System.out.println("Seuil: " + parametre.getSeuil());
+		// }
+
+		Parametre parametre = parametreService.getParametre(1L, 1L);
+		System.out.println("Seuil: " + parametre.getSeuil());
 	}
 
 }
