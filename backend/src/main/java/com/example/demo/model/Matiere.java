@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name = "t_matieres")
 public class Matiere {
@@ -20,11 +17,9 @@ public class Matiere {
     private BigDecimal coefficient;
 
     @OneToMany(mappedBy = "matiere")
-    @JsonBackReference
     private List<Note> notes;
 
     @OneToMany(mappedBy = "matiere")
-    @JsonBackReference
     private List<NoteFinale> notesFinales;
 
     public Matiere(){}

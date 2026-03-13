@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "t_etudiants")
@@ -16,11 +15,9 @@ public class Etudiant {
     private String prenom;
 
     @OneToMany(mappedBy = "etudiant")
-    @JsonManagedReference
     private List<Note> notes;
 
     @OneToMany(mappedBy = "etudiant")
-    @JsonManagedReference
     private List<NoteFinale> notesFinales;
 
     public Etudiant() {
