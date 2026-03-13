@@ -55,12 +55,12 @@ function App() {
             {note !== null && (
 
               <tr>
-                <th>{note.matiere.id}</th>
-                <td>{note.matiere.nom}</td>
+                <th>{note.matiereId}</th>
+                <td>{note.matiere}</td>
                 <td className=" text-lg font-bold">
                   {note.valeur} / 20
                 </td>
-                <td>{note.parametre.resolution.libelle}</td>
+                <td>{note.resolution}</td>
               </tr>
             )}
 
