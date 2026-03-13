@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,45 +33,90 @@ public class ParametreService {
         repository.deleteById(id);
     }
 
-    // public Parametre getParametreByDifferenceNote(Long matiereId, Long etudiantId) {
+    public List<Parametre> findByMatiereId(Long matiereId) {
+        return repository.findByMatiere_id(matiereId);
+    }
 
-    //     Parametre parametre = new Parametre();
+    public List<Parametre> getParametresPotentiels(Long matiereId, Long etudiantId) {
 
-    //     Double differenceNote = noteService.getDifferenceNote(matiereId, etudiantId);
-    //     Difference difference = differenceService.findByMatiereId(matiereId);
+        List<Parametre> parametresPotentiels = new ArrayList<>();
 
-    //     if (differenceNote >= difference.getValeur()) {
+        List<Parametre> parametres = findByMatiereId(matiereId);
+        Double difference = noteService.getDifferenceNote(matiereId, etudiantId);
 
-    //         if (differenceNote.equals(difference.getValeur())) {
-    //             parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
-    //             if (parametre != null) {
-    //                 return parametre;
-    //             }
-    //         } else {
-    //             parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
-    //             if (parametre == null) {
-    //                 parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
-    //             }
-    //         }
+        for (Parametre parametre : parametres) {
 
-    //     }
+            String operateur = parametre.getOperateur().getLibelle();
+            Double seuil = parametre.getSeuil();
 
-    //     if (differenceNote <= difference.getValeur()) {
+            if (operateur.equals("<")) {
+                if (difference < seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
 
-    //         if (differenceNote.equals(difference.getValeur())) {
-    //             parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
-    //         } else {
-    //             parametre = findByOperateurIdAndDifferenceId(1L, difference.getId());
-    //             if (parametre == null) {
-    //                 parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
-    //             }
-    //         }
-    //     }
+            if (operateur.equals("<=")) {
+                if (difference <= seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
 
-    //     // if (differenceNote.equals(difference.getValeur())) {
-    //     // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
-    //     // }
+            if (operateur.equals(">")) {
+                if (difference > seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
 
-    //     return parametre;
+            if (operateur.equals(">=")) {
+                if (difference >= seuil) {
+                    parametresPotentiels.add(parametre);
+                }
+            }
+        }
+
+        return parametresPotentiels;
+    }
+
+    // public Parametre getParametreByDifferenceNote(Long matiereId, Long
+    // etudiantId) {
+
+    // Parametre parametre = new Parametre();
+
+    // Double differenceNote = noteService.getDifferenceNote(matiereId, etudiantId);
+    // Difference difference = differenceService.findByMatiereId(matiereId);
+
+    // if (differenceNote >= difference.getValeur()) {
+
+    // if (differenceNote.equals(difference.getValeur())) {
+    // parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+    // if (parametre != null) {
+    // return parametre;
+    // }
+    // } else {
+    // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+    // if (parametre == null) {
+    // parametre = findByOperateurIdAndDifferenceId(4L, difference.getId());
+    // }
+    // }
+
+    // }
+
+    // if (differenceNote <= difference.getValeur()) {
+
+    // if (differenceNote.equals(difference.getValeur())) {
+    // parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+    // } else {
+    // parametre = findByOperateurIdAndDifferenceId(1L, difference.getId());
+    // if (parametre == null) {
+    // parametre = findByOperateurIdAndDifferenceId(2L, difference.getId());
+    // }
+    // }
+    // }
+
+    // // if (differenceNote.equals(difference.getValeur())) {
+    // // parametre = findByOperateurIdAndDifferenceId(3L, difference.getId());
+    // // }
+
+    // return parametre;
     // }
 }

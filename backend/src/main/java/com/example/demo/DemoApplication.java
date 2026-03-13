@@ -16,6 +16,9 @@ public class DemoApplication implements CommandLineRunner {
 	@Autowired
 	private NoteFinaleService noteFinaleService;
 
+	@Autowired
+	private ParametreService parametreService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
@@ -24,6 +27,12 @@ public class DemoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// NoteFinale noteFinale = noteFinaleService.getNoteFinale(1L, 1L);
 		// System.out.println(noteFinale.getValeur());
+
+		List<Parametre> parametres = parametreService.getParametresPotentiels(1L, 1L);
+
+		for (Parametre parametre : parametres) {
+			System.out.println("Seuil: " + parametre.getSeuil());
+		}
 	}
 
 }
