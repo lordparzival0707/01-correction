@@ -28,10 +28,17 @@ public class DemoApplication implements CommandLineRunner {
 		// NoteFinale noteFinale = noteFinaleService.getNoteFinale(1L, 1L);
 		// System.out.println(noteFinale.getValeur());
 
-		List<Parametre> parametres = parametreService.getParametresPotentiels(1L, 1L);
+		// List<Parametre> parametres = parametreService.getParametresPotentiels(1L,
+		// 1L);
 
-		for (Parametre parametre : parametres) {
-			System.out.println("Seuil: " + parametre.getSeuil());
+		// for (Parametre parametre : parametres) {
+		// System.out.println("Seuil: " + parametre.getSeuil());
+		// }
+
+		Map<Long, Double> ecarts = parametreService.getEcartsDifferencePP(1L, 1L);
+
+		for (Map.Entry<Long, Double> entry : ecarts.entrySet()) {
+			System.out.println(entry.getValue());
 		}
 	}
 

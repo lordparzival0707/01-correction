@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Parametre;
 import com.example.demo.repository.ParametreRepository;
+import java.util.*;
 
 @Service
 public class ParametreService {
@@ -76,6 +75,22 @@ public class ParametreService {
 
         return parametresPotentiels;
     }
+
+    public Map<Long, Double> getEcartsDifferencePP(Long matiereId, Long etudiantId) {
+
+        Map<Long, Double> ecartsSeuils = new HashMap<>();
+
+        List<Parametre> parametresPotentiels = getParametresPotentiels(matiereId, etudiantId);
+        Double difference = noteService.getDifferenceNote(matiereId, etudiantId);
+
+        for (Parametre parametre : parametresPotentiels) {
+            Double ecart = parametre.getSeuil() - difference;
+            ecartsSeuils.put(parametre.getId(), Math.abs(ecart));
+        }
+
+        return ecartsSeuils;
+    }
+
 
     // public Parametre getParametreByDifferenceNote(Long matiereId, Long
     // etudiantId) {
