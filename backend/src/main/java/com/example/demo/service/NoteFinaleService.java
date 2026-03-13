@@ -44,31 +44,33 @@ public class NoteFinaleService {
         repository.deleteById(id);
     }
 
-    // public NoteFinale getNoteFinale(Long matiereId, Long etudiantId) {
+    public NoteFinale getNoteFinale(Long matiereId, Long etudiantId) {
 
-    //     NoteFinale noteFinale = new NoteFinale();
+        NoteFinale noteFinale = new NoteFinale();
 
-    //     Parametre parametre = parametreService.getParametreByDifferenceNote(matiereId, etudiantId);
-    //     List<Note> notes = noteService.findByMatiereIdAndEtudiantId(matiereId, etudiantId);
+        Parametre parametre = parametreService.getParametre(matiereId, etudiantId);
+        List<Note> notes = noteService.findByMatiereIdAndEtudiantId(matiereId, etudiantId);
 
-    //     Double noteValeur = 0.0;
-    //     DoubleSummaryStatistics stats = notes.stream().mapToDouble(Note::getValeur).summaryStatistics();
+        Double noteValeur = 0.0;
+        DoubleSummaryStatistics stats = notes.stream().mapToDouble(Note::getValeur).summaryStatistics();
 
-    //     if (parametre.getResolution().getId() == 1) {
-    //         noteValeur = stats.getMin();
-    //     }
-    //     if (parametre.getResolution().getId() == 2) {
-    //         noteValeur = stats.getMax();
-    //     }
-    //     if (parametre.getResolution().getId() == 3) {
-    //         noteValeur = stats.getAverage();
-    //     }
+        String resolutionLibelle = parametre.getResolution().getLibelle();
 
-    //     noteFinale.setValeur(noteValeur);
-    //     noteFinale.setMatiere(matiereService.findById(matiereId));
-    //     noteFinale.setEtudiant(etudiantService.findById(etudiantId));
-    //     noteFinale.setParametre(parametre);
+        if (resolutionLibelle.equals("plus_petit")) {
+            noteValeur = stats.getMin();
+        }
+        if (resolutionLibelle.equals("plus_grand")) {
+            noteValeur = stats.getMax();
+        }
+        if (resolutionLibelle.equals("moyenne")) {
+            noteValeur = stats.getAverage();
+        }
 
-    //     return noteFinale;
-    // }
+        noteFinale.setValeur(noteValeur);
+        noteFinale.setMatiere(matiereService.findById(matiereId));
+        noteFinale.setEtudiant(etudiantService.findById(etudiantId));
+        noteFinale.setParametre(parametre);
+
+        return noteFinale;
+    }
 }
